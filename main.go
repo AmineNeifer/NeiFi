@@ -47,7 +47,7 @@ type TransactionRecordRevolut struct {
 const date_format_wise = "2006-01-02 15:04:05"
 
 // yyyy-mm-dd
-const date_format_revolut = "2/1/2006 15:04"
+const date_format_revolut = "1/2/2006 15:04"
 
 //dd/mm/yyyy
 

@@ -5,6 +5,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"log"
+	"math/rand"
 	"os"
 	"strconv"
 	"time"
@@ -26,7 +27,7 @@ type TransactionRecordRevolut struct {
 const date_format_revolut = "1/2/2006 15:04"
 
 // mm/dd/yyyy
-func PrintRevolut() {
+func GetData() TransactionsRevolut {
 	// open file
 	f, err := os.Open("revolut/transaction-history-MAY-2023-Rev.csv")
 	if err != nil {
@@ -44,7 +45,7 @@ func PrintRevolut() {
 		log.Fatal(err)
 	}
 
-	var transactionListRevolut []TransactionRecordRevolut
+	var transactionListRevolut TransactionsRevolut
 	for _, row := range data {
 		started_date, _ := time.Parse(date_format_revolut, row[2])
 		completed_date, _ := time.Parse(date_format_revolut, row[3])
@@ -64,11 +65,21 @@ func PrintRevolut() {
 			State:          row[8],
 			Balance:        float32(balance),
 		}
-		transactionListRevolut = append(transactionListRevolut, transactionRecordRevolut)
+		transactionListRevolut.records = append(transactionListRevolut.records, transactionRecordRevolut)
 	}
-	// just to pretty print, to see data clearly
+	return transactionListRevolut
+}
+
+type TransactionsRevolut struct {
+	records []TransactionRecordRevolut
+}
+
+func (r TransactionsRevolut) Print() {
 	fmt.Println("Revolut Example")
-	transactionJSON, err := json.MarshalIndent(transactionListRevolut[1], "", " ")
+	// random index to print
+	random_index := rand.Intn(len(r.records))
+
+	transactionJSON, err := json.MarshalIndent(r.records[random_index], "", " ")
 	if err != nil {
 		log.Fatalf(err.Error())
 	}

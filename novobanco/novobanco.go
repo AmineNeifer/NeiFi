@@ -5,6 +5,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"log"
+	"math/rand"
 	"os"
 	"strconv"
 	"time"
@@ -21,9 +22,10 @@ type TransactionRecordNovoBanco struct {
 }
 
 const date_format_novobanco = "02-01-2006"
+
 // dd-mm-yyyy
 
-func PrintNovoBanco() {
+func GetData() TransactionsNovoBanco {
 
 	// open file
 	f, err := os.Open("novobanco/transaction-history-MAY-2023-Novo.csv")
@@ -42,7 +44,7 @@ func PrintNovoBanco() {
 		log.Fatal(err)
 	}
 
-	var transactionListNovoBanco []TransactionRecordNovoBanco
+	var transactionListNovoBanco TransactionsNovoBanco
 	for i, row := range data {
 		if i < 10 {
 			continue
@@ -62,11 +64,27 @@ func PrintNovoBanco() {
 			Credit:              float32(credit),
 			Balance:             float32(balance),
 		}
-		transactionListNovoBanco = append(transactionListNovoBanco, transactionRecordNovoBanco)
+		transactionListNovoBanco.records = append(transactionListNovoBanco.records, transactionRecordNovoBanco)
 	}
+	return transactionListNovoBanco
 	// just to pretty print, to see data clearly
+	// transactionJSON, err := json.MarshalIndent(transactionListNovoBanco[3], "", " ")
+	// if err != nil {
+	// 	log.Fatalf(err.Error())
+	// }
+	// fmt.Println(string(transactionJSON))
+}
+
+type TransactionsNovoBanco struct {
+	records []TransactionRecordNovoBanco
+}
+
+func (r TransactionsNovoBanco) Print() {
 	fmt.Println("NovoBanco Example")
-	transactionJSON, err := json.MarshalIndent(transactionListNovoBanco[3], "", " ")
+	// random index to print
+	random_index := rand.Intn(len(r.records))
+
+	transactionJSON, err := json.MarshalIndent(r.records[random_index], "", " ")
 	if err != nil {
 		log.Fatalf(err.Error())
 	}

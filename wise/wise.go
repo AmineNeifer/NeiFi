@@ -5,6 +5,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"log"
+	"math/rand"
 	"os"
 	"strconv"
 	"time"
@@ -32,9 +33,10 @@ type TransactionRecordWise struct {
 }
 
 const date_format_wise = "2006-01-02 15:04:05"
+
 // yyyy-mm-dd
 
-func PrintWise() {
+func GetData() TransactionsWise {
 	// open file
 	f, err := os.Open("wise/transaction-history-MAY-2023-Wise.csv")
 	if err != nil {
@@ -52,7 +54,7 @@ func PrintWise() {
 		log.Fatal(err)
 	}
 
-	var transactionListWise []TransactionRecordWise
+	var transactionListWise TransactionsWise
 	for _, row := range data {
 		created_on, _ := time.Parse(date_format_wise, row[3])
 		finished_on, _ := time.Parse(date_format_wise, row[4])
@@ -81,12 +83,21 @@ func PrintWise() {
 			Reference:         row[16],
 			Batch:             row[17],
 		}
-		transactionListWise = append(transactionListWise, transactionRecordWise)
+		transactionListWise.records = append(transactionListWise.records, transactionRecordWise)
 	}
-	_ = transactionListWise
-	// just to pretty print, to see data clearly
+	return transactionListWise
+}
+
+type TransactionsWise struct {
+	records []TransactionRecordWise
+}
+
+func (r TransactionsWise) Print() {
 	fmt.Println("Wise Example")
-	transactionJSON, err := json.MarshalIndent(transactionListWise[4], "", " ")
+	// random index to print
+	random_index := rand.Intn(len(r.records))
+
+	transactionJSON, err := json.MarshalIndent(r.records[random_index], "", " ")
 	if err != nil {
 		log.Fatalf(err.Error())
 	}

@@ -6,8 +6,17 @@ import (
 	"github.com/NeiFi/wise"
 )
 
+type TransactionRecord interface {
+	Print()
+}
+
 func main() {
-	revolut.PrintRevolut()
-	wise.PrintWise()
-	novobanco.PrintNovoBanco()
+
+	w_data := wise.GetData()
+	r_data := revolut.GetData()
+	n_data := novobanco.GetData()
+
+	w_data.Print()
+	r_data.Print()
+	n_data.Print()
 }

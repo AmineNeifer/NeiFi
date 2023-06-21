@@ -54,7 +54,7 @@ func GetData() TransactionsWise {
 		log.Fatal(err)
 	}
 
-	var transactionListWise TransactionsWise
+	var transaction_list_wise TransactionsWise
 	for _, row := range data {
 		created_on, _ := time.Parse(date_format_wise, row[3])
 		finished_on, _ := time.Parse(date_format_wise, row[4])
@@ -63,7 +63,7 @@ func GetData() TransactionsWise {
 		source_amount_af, _ := strconv.ParseFloat(row[10], 32)
 		target_amount_af, _ := strconv.ParseFloat(row[13], 32)
 		exchange_rate, _ := strconv.ParseFloat(row[15], 32)
-		transactionRecordWise := TransactionRecordWise{
+		transaction_record_wise := TransactionRecordWise{
 			ID:                row[0],
 			Status:            row[1],
 			Direction:         row[2],
@@ -83,9 +83,9 @@ func GetData() TransactionsWise {
 			Reference:         row[16],
 			Batch:             row[17],
 		}
-		transactionListWise.records = append(transactionListWise.records, transactionRecordWise)
+		transaction_list_wise.records = append(transaction_list_wise.records, transaction_record_wise)
 	}
-	return transactionListWise
+	return transaction_list_wise
 }
 
 type TransactionsWise struct {

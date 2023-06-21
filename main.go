@@ -6,6 +6,9 @@ import (
 	"github.com/NeiFi/wise"
 )
 
+// Naming for variables: name_of_variable
+// Naming for types: nameOfType
+
 type TransactionRecord interface {
 	Print()
 }
@@ -19,4 +22,5 @@ func main() {
 	w_data.Print()
 	r_data.Print()
 	n_data.Print()
+
 }

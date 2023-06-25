@@ -6,6 +6,14 @@ import (
 	"time"
 )
 
+type Transactions interface {
+	Print()
+}
+
+type Record interface {
+	ToModel() Model
+}
+
 type Model struct {
 	ID     string    `json:"id"`
 	Date   time.Time `json:"date"`
@@ -13,10 +21,13 @@ type Model struct {
 	Debit  float32   `json:"debit"`
 	Credit float32   `json:"credit"`
 	Desc   string    `json:"desc"`
+	Note   string    `json:"note"`
 	Source string    `json:"source"`
+	Target string    `json:"target"`
 }
 
-func createID(concatenated_data string) string {
+func CreateID(r Record) string {
+	concatenated_data := fmt.Sprintf("%v", r)
 	return encrypt(concatenated_data)
 }
 

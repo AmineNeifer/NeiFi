@@ -9,10 +9,6 @@ import (
 // Naming for variables: name_of_variable
 // Naming for types: nameOfType
 
-type TransactionRecord interface {
-	Print()
-}
-
 func main() {
 
 	w_data := wise.GetData()
